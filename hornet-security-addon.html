@@ -9,166 +9,64 @@
     <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
     
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding: 20px;
-            background: #f5f5f5;
-            color: #333;
-        }
-        
-        .container {
-            max-width: 350px;
-            margin: 0 auto;
-        }
-        
-        h1 {
-            color: #0078d4;
-            font-size: 20px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .subtitle {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 25px;
-        }
-        
-        .encryption-options {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-        
-        .option {
-            display: flex;
-            align-items: center;
-            padding: 12px;
-            margin: 8px 0;
-            background: #f9f9f9;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .option:hover {
-            background: #e9f5ff;
-            transform: translateX(5px);
-        }
-        
-        .option input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            margin-right: 15px;
-            cursor: pointer;
-        }
-        
-        .option-label {
-            flex: 1;
-            font-size: 15px;
-            font-weight: 500;
-        }
-        
+    .option {
+        display: flex;
+        align-items: flex-start;
+        padding: 15px;
+        margin: 10px 0;
+        background: #f9f9f9;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        min-height: 100px;
+    }
+    
+    .option:hover {
+        background: #e9f5ff;
+        transform: translateX(3px);
+        box-shadow: 0 2px 8px rgba(0,120,212,0.1);
+    }
+    
+    .option input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-right: 15px;
+        margin-top: 3px;
+        cursor: pointer;
+    }
+    
+    .option-label {
+        font-size: 15px;
+        font-weight: 600;
+        color: #0078d4;
+        margin-bottom: 8px;
+        display: block;
+    }
+    
+    .option-description {
+        font-size: 12px;
+        color: #555;
+        line-height: 1.5;
+        margin-top: 5px;
+    }
+    
+    .option-description strong {
+        color: #333;
+        font-weight: 600;
+    }
+    
+    /* Make the panel wider to accommodate more text */
+    .container {
+        max-width: 400px;
+    }
+    
+    /* Adjust for smaller screens */
+    @media (max-width: 400px) {
         .option-description {
-            font-size: 12px;
-            color: #666;
-            margin-top: 3px;
+            font-size: 11px;
         }
-        
-        .apply-btn {
-            background: #0078d4;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-size: 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            width: 100%;
-            transition: background 0.3s ease;
-        }
-        
-        .apply-btn:hover {
-            background: #106ebe;
-        }
-        
-        .apply-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-        
-        .status-message {
-            padding: 12px;
-            border-radius: 6px;
-            margin-top: 15px;
-            text-align: center;
-            display: none;
-        }
-        
-        .status-message.success {
-            background: #d4f4dd;
-            color: #0e7c2a;
-            border: 1px solid #0e7c2a;
-            display: block;
-        }
-        
-        .status-message.error {
-            background: #fdd;
-            color: #c00;
-            border: 1px solid #c00;
-            display: block;
-        }
-        
-        .status-message.info {
-            background: #e3f2fd;
-            color: #0d47a1;
-            border: 1px solid #0d47a1;
-            display: block;
-        }
-        
-        .current-tags {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            display: none;
-        }
-        
-        .current-tags.visible {
-            display: block;
-        }
-        
-        .remove-tags-btn {
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            font-size: 14px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        
-        .remove-tags-btn:hover {
-            background: #c82333;
-        }
-        
-        .logo {
-            width: 24px;
-            height: 24px;
-        }
-    </style>
+    }
+</style>
 </head>
 <body>
     <div class="container">
@@ -185,46 +83,71 @@
         </div>
         
         <div class="encryption-options">
-            <div class="option">
-                <input type="checkbox" id="tls" name="encryption" value="TLS">
-                <div>
-                    <label for="tls" class="option-label">TLS</label>
-                    <div class="option-description">Transport Layer Security encryption</div>
-                </div>
-            </div>
-            
-            <div class="option">
-                <input type="checkbox" id="smime" name="encryption" value="S/MIME">
-                <div>
-                    <label for="smime" class="option-label">S/MIME</label>
-                    <div class="option-description">Secure/Multipurpose Internet Mail Extensions</div>
-                </div>
-            </div>
-            
-            <div class="option">
-                <input type="checkbox" id="pgp" name="encryption" value="PGP">
-                <div>
-                    <label for="pgp" class="option-label">PGP</label>
-                    <div class="option-description">Pretty Good Privacy encryption</div>
-                </div>
-            </div>
-            
-            <div class="option">
-                <input type="checkbox" id="websafe" name="encryption" value="Websafe">
-                <div>
-                    <label for="websafe" class="option-label">Websafe</label>
-                    <div class="option-description">Web-based secure delivery</div>
-                </div>
-            </div>
-            
-            <div class="option">
-                <input type="checkbox" id="emig" name="encryption" value="EmiG">
-                <div>
-                    <label for="emig" class="option-label">EmiG</label>
-                    <div class="option-description">German authority encryption standard</div>
-                </div>
+    <!-- TLS Option -->
+    <div class="option">
+        <input type="checkbox" id="tls" name="encryption" value="TLS">
+        <div style="flex: 1;">
+            <label for="tls" class="option-label">TLS - Transport Layer Security</label>
+            <div class="option-description">
+                <strong>What it does:</strong> Encrypts email during transmission between mail servers<br>
+                <strong>How it works:</strong> Creates secure tunnel for email transit, decrypted at destination<br>
+                <strong>Use cases:</strong> Standard business emails, non-sensitive external communications, when recipient encryption status unknown
             </div>
         </div>
+    </div>
+    
+    <!-- S/MIME Option -->
+    <div class="option">
+        <input type="checkbox" id="smime" name="encryption" value="S/MIME">
+        <div style="flex: 1;">
+            <label for="smime" class="option-label">S/MIME - Certificate-Based Encryption</label>
+            <div class="option-description">
+                <strong>What it does:</strong> End-to-end encryption using digital certificates<br>
+                <strong>How it works:</strong> Uses public/private key pairs with trusted certificates<br>
+                <strong>Use cases:</strong> Legal documents, contracts with partners, B2B communications where both parties have certificates
+            </div>
+        </div>
+    </div>
+    
+    <!-- PGP Option -->
+    <div class="option">
+        <input type="checkbox" id="pgp" name="encryption" value="PGP">
+        <div style="flex: 1;">
+            <label for="pgp" class="option-label">PGP - Pretty Good Privacy</label>
+            <div class="option-description">
+                <strong>What it does:</strong> Strong end-to-end encryption using key pairs<br>
+                <strong>How it works:</strong> Web of trust model with public/private keys<br>
+                <strong>Use cases:</strong> Tech sector communications, international partners, journalists, when S/MIME unavailable
+            </div>
+        </div>
+    </div>
+    
+    <!-- Websafe Option -->
+    <div class="option">
+        <input type="checkbox" id="websafe" name="encryption" value="Websafe">
+        <div style="flex: 1;">
+            <label for="websafe" class="option-label">Websafe - Secure Portal Delivery</label>
+            <div class="option-description">
+                <strong>What it does:</strong> Email never enters recipient inbox, accessed via secure portal<br>
+                <strong>How it works:</strong> Recipient gets notification with link, authenticates to read message<br>
+                <strong>Use cases:</strong> Sensitive data to personal emails (Gmail, Yahoo), confidential info to unknown recipients, financial/medical data
+            </div>
+        </div>
+    </div>
+    
+    <!-- EmiG Option -->
+    <div class="option">
+        <input type="checkbox" id="emig" name="encryption" value="EmiG">
+        <div style="flex: 1;">
+            <label for="emig" class="option-label">EmiG - German Authority Standard</label>
+            <div class="option-description">
+                <strong>What it does:</strong> Compliance with German BSI security standards<br>
+                <strong>How it works:</strong> Special encryption meeting government requirements with audit trails<br>
+                <strong>Use cases:</strong> German authorities, healthcare providers, insurance companies, GDPR-critical data for German entities
+            </div>
+        </div>
+    </div>
+</div>
         
         <button class="apply-btn" onclick="applyEncryptionTags()">Apply Encryption Tags</button>
         
@@ -387,3 +310,4 @@
     </script>
 </body>
 </html>
+
