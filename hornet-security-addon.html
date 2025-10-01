@@ -3,165 +3,688 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hornet Security Encryption Tags</title>
+    <title>Hornet Security Encryption</title>
     
     <!-- Office JavaScript API -->
     <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
     
     <style>
-    .option {
-        display: flex;
-        align-items: flex-start;
-        padding: 15px;
-        margin: 10px 0;
-        background: #f9f9f9;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        min-height: 100px;
-    }
-    
-    .option:hover {
-        background: #e9f5ff;
-        transform: translateX(3px);
-        box-shadow: 0 2px 8px rgba(0,120,212,0.1);
-    }
-    
-    .option input[type="checkbox"] {
-        width: 20px;
-        height: 20px;
-        margin-right: 15px;
-        margin-top: 3px;
-        cursor: pointer;
-    }
-    
-    .option-label {
-        font-size: 15px;
-        font-weight: 600;
-        color: #0078d4;
-        margin-bottom: 8px;
-        display: block;
-    }
-    
-    .option-description {
-        font-size: 12px;
-        color: #555;
-        line-height: 1.5;
-        margin-top: 5px;
-    }
-    
-    .option-description strong {
-        color: #333;
-        font-weight: 600;
-    }
-    
-    /* Make the panel wider to accommodate more text */
-    .container {
-        max-width: 400px;
-    }
-    
-    /* Adjust for smaller screens */
-    @media (max-width: 400px) {
-        .option-description {
-            font-size: 11px;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
-    }
-</style>
+        
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+        
+        .container {
+            background: #ffffff;
+            min-height: 100vh;
+            box-shadow: 0 0 40px rgba(0,0,0,0.1);
+            position: relative;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+        
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 24px 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%); }
+            100% { transform: translateX(100%) translateY(100%); }
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .logo-text {
+            flex: 1;
+        }
+        
+        .logo-text h1 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 2px;
+            letter-spacing: -0.5px;
+        }
+        
+        .logo-text .subtitle {
+            font-size: 12px;
+            opacity: 0.95;
+            font-weight: 400;
+        }
+        
+        /* Current Tags Section */
+        .current-tags {
+            background: #f8f9fa;
+            padding: 12px 20px;
+            border-bottom: 1px solid #e9ecef;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+        
+        .current-tags.visible {
+            display: block;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .tags-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .tags-label {
+            font-size: 12px;
+            color: #6c757d;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .tag-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .tag-badge {
+            background: white;
+            color: #495057;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid #dee2e6;
+        }
+        
+        .remove-tags-btn {
+            background: transparent;
+            color: #dc3545;
+            border: 1px solid #dc3545;
+            padding: 4px 12px;
+            font-size: 11px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        
+        .remove-tags-btn:hover {
+            background: #dc3545;
+            color: white;
+        }
+        
+        /* Encryption Options Section */
+        .options-container {
+            padding: 20px;
+        }
+        
+        .section-title {
+            font-size: 13px;
+            color: #6c757d;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+        
+        .encryption-option {
+            background: #ffffff;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .encryption-option:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .encryption-option.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+        }
+        
+        .option-header {
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .custom-checkbox {
+            width: 22px;
+            height: 22px;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .custom-checkbox input {
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .checkbox-display {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 22px;
+            height: 22px;
+            border: 2px solid #dee2e6;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            pointer-events: none;
+        }
+        
+        .custom-checkbox input:checked ~ .checkbox-display {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+        }
+        
+        .custom-checkbox input:checked ~ .checkbox-display::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 7px;
+            width: 6px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        
+        .option-content {
+            flex: 1;
+        }
+        
+        .option-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .encryption-type {
+            color: #667eea;
+        }
+        
+        .option-subtitle {
+            font-size: 12px;
+            color: #6c757d;
+            margin-bottom: 8px;
+        }
+        
+        .option-details {
+            font-size: 11px;
+            color: #6c757d;
+            line-height: 1.6;
+            display: grid;
+            gap: 4px;
+        }
+        
+        .detail-row {
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: #495057;
+            min-width: 70px;
+            margin-right: 8px;
+        }
+        
+        .detail-text {
+            flex: 1;
+            color: #6c757d;
+        }
+        
+        /* Security Indicator */
+        .security-level {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            color: #6c757d;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #f8f9fa;
+        }
+        
+        .security-dots {
+            display: flex;
+            gap: 3px;
+        }
+        
+        .security-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #e9ecef;
+        }
+        
+        .security-dot.active {
+            background: #667eea;
+        }
+        
+        /* Apply Button */
+        .action-section {
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .apply-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .apply-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .apply-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .apply-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .apply-btn:disabled {
+            background: #e9ecef;
+            color: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Status Messages */
+        .status-message {
+            margin: 16px 20px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .status-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        
+        .status-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+        
+        .status-message.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+            display: block;
+        }
+        
+        /* Footer */
+        .footer {
+            padding: 12px 20px;
+            font-size: 11px;
+            color: #6c757d;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>
-            <span>🔐</span>
-            Hornet Security
-        </h1>
-        <div class="subtitle">Select encryption methods for this email</div>
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-section">
+                <div class="logo-icon">🔐</div>
+                <div class="logo-text">
+                    <h1>Hornet Security</h1>
+                    <div class="subtitle">Email Encryption Protection</div>
+                </div>
+            </div>
+        </div>
         
+        <!-- Current Tags -->
         <div class="current-tags" id="currentTags">
-            <strong>Current tags:</strong> <span id="currentTagsList"></span>
-            <br>
-            <button class="remove-tags-btn" onclick="removeTags()">Remove All Tags</button>
+            <div class="tags-header">
+                <span class="tags-label">Active Encryption</span>
+                <button class="remove-tags-btn" onclick="removeTags()">Clear All</button>
+            </div>
+            <div class="tag-badges" id="currentTagsList"></div>
         </div>
         
-        <div class="encryption-options">
-    <!-- TLS Option -->
-    <div class="option">
-        <input type="checkbox" id="tls" name="encryption" value="TLS">
-        <div style="flex: 1;">
-            <label for="tls" class="option-label">TLS - Transport Layer Security</label>
-            <div class="option-description">
-                <strong>What it does:</strong> Encrypts email during transmission between mail servers<br>
-                <strong>How it works:</strong> Creates secure tunnel for email transit, decrypted at destination<br>
-                <strong>Use cases:</strong> Standard business emails, non-sensitive external communications, when recipient encryption status unknown
+        <!-- Options -->
+        <div class="options-container">
+            <div class="section-title">Select Encryption Method</div>
+            
+            <!-- TLS Option -->
+            <div class="encryption-option" onclick="toggleOption(this, 'tls')">
+                <div class="option-header">
+                    <div class="custom-checkbox">
+                        <input type="checkbox" id="tls" name="encryption" value="TLS">
+                        <div class="checkbox-display"></div>
+                    </div>
+                    <div class="option-content">
+                        <div class="option-title">
+                            <span class="encryption-type">[TLS]</span>
+                            Transport Layer Security
+                        </div>
+                        <div class="option-subtitle">Basic Protection</div>
+                        <div class="option-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Function:</span>
+                                <span class="detail-text">Encrypts during server transmission</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Best for:</span>
+                                <span class="detail-text">Standard business, non-sensitive emails</span>
+                            </div>
+                        </div>
+                        <div class="security-level">
+                            Security Level:
+                            <div class="security-dots">
+                                <span class="security-dot active"></span>
+                                <span class="security-dot"></span>
+                                <span class="security-dot"></span>
+                                <span class="security-dot"></span>
+                                <span class="security-dot"></span>
+                            </div>
+                            Basic
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- S/MIME Option -->
+            <div class="encryption-option" onclick="toggleOption(this, 'smime')">
+                <div class="option-header">
+                    <div class="custom-checkbox">
+                        <input type="checkbox" id="smime" name="encryption" value="S/MIME">
+                        <div class="checkbox-display"></div>
+                    </div>
+                    <div class="option-content">
+                        <div class="option-title">
+                            <span class="encryption-type">[S/MIME]</span>
+                            Certificate-Based
+                        </div>
+                        <div class="option-subtitle">Digital Signatures & Encryption</div>
+                        <div class="option-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Function:</span>
+                                <span class="detail-text">End-to-end with certificates</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Best for:</span>
+                                <span class="detail-text">Legal docs, B2B, contracts</span>
+                            </div>
+                        </div>
+                        <div class="security-level">
+                            Security Level:
+                            <div class="security-dots">
+                                <span class="security-dot active"></span>
+                                <span class="security-dot active"></span>
+                                <span class="security-dot active"></span>
+                                <span class="security-dot"></span>
+                                <span class="security-dot"></span>
+                            </div>
+                            High
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- PGP Option -->
+            <div class="encryption-option" onclick="toggleOption(this, 'pgp')">
+                <div class="option-header">
+                    <div class="custom-checkbox">
+                        <input type="checkbox" id="pgp" name="encryption" value="PGP">
+                        <div class="checkbox-display"></div>
+                    </div>
+                    <div class="option-content">
+                        <div class="option-title">
+                            <span class="encryption-type">[PGP]</span>
+                            Pretty Good Privacy
+                        </div>
+                        <div class="option-subtitle">Key-Based Encryption</div>
+                        <div class="option-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Function:</span>
+                                <span class="detail-text">Strong end-to-end with keys</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Best for:</span>
+                                <span class="detail-text">Tech sector, international</span>
+                            </div>
+                        </div>
+                        <div class="security-level">
+                            Security Level:
+                            <div class="security-dots">
+                                <span class="security-dot active"></span>
+                                <span class="security-dot active"></span>
+                                <span class="security-dot active"></span>
+                                <span class="security-dot active"></span>
+                                <span class="security-dot"></span>
+                            </div>
+                            Very High
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Websafe Option -->
+            <div class="encryption-option" onclick="toggleOption(this, 'websafe')">
+                <div class="option-header">
+                    <div class="custom-checkbox">
+                        <input type="checkbox" id="websafe" name="encryption" value="Websafe">
+                        <div class="checkbox-display"></div>
+                    </div>
+                    <div class="option-content">
+                        <div class="option-title">
+                            <span class="encryption-type">[Websafe]</span>
+                            Secure Portal
+                        </div>
+                        <div class="option-subtitle">Portal-Based Delivery</div>
+                        <div class="option-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Function:</span>
+                                <span class="detail-text">Never enters recipient inbox</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Best for:</span>
+                                <span class="detail-text">Sensitive external, personal emails</span>
+                            </div>
+                        </div>
+                        <div class="security-level">
+                            Security Level:
+                            <div class="security-dots">
+                                <span class="security-dot active"></span>
+                                <span class="security-dot active"></span>
+                                <span class="security-dot active"></span>
+                                <span class="security-dot active"></span>
+                                <span class="security-dot active"></span>
+                            </div>
+                            Maximum
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- EmiG Option -->
+            <div class="encryption-option" onclick="toggleOption(this, 'emig')">
+                <div class="option-header">
+                    <div class="custom-checkbox">
+                        <input type="checkbox" id="emig" name="encryption" value="EmiG">
+                        <div class="checkbox-display"></div>
+                    </div>
+                    <div class="option-content">
+                        <div class="option-title">
+                            <span class="encryption-type">[EmiG]</span>
+                            German Standard
+                        </div>
+                        <div class="option-subtitle">BSI Compliance</div>
+                        <div class="option-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Function:</span>
+                                <span class="detail-text">German authority compliance</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Best for:</span>
+                                <span class="detail-text">German gov, healthcare, GDPR</span>
+                            </div>
+                        </div>
+                        <div class="security-level">
+                            Security Level:
+                            <div class="security-dots">
+                                <span class="security-dot active"></span>
+                                <span class="security-dot active"></span>
+                                <span class="security-dot active"></span>
+                                <span class="security-dot active"></span>
+                                <span class="security-dot"></span>
+                            </div>
+                            Very High
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    
-    <!-- S/MIME Option -->
-    <div class="option">
-        <input type="checkbox" id="smime" name="encryption" value="S/MIME">
-        <div style="flex: 1;">
-            <label for="smime" class="option-label">S/MIME - Certificate-Based Encryption</label>
-            <div class="option-description">
-                <strong>What it does:</strong> End-to-end encryption using digital certificates<br>
-                <strong>How it works:</strong> Uses public/private key pairs with trusted certificates<br>
-                <strong>Use cases:</strong> Legal documents, contracts with partners, B2B communications where both parties have certificates
-            </div>
-        </div>
-    </div>
-    
-    <!-- PGP Option -->
-    <div class="option">
-        <input type="checkbox" id="pgp" name="encryption" value="PGP">
-        <div style="flex: 1;">
-            <label for="pgp" class="option-label">PGP - Pretty Good Privacy</label>
-            <div class="option-description">
-                <strong>What it does:</strong> Strong end-to-end encryption using key pairs<br>
-                <strong>How it works:</strong> Web of trust model with public/private keys<br>
-                <strong>Use cases:</strong> Tech sector communications, international partners, journalists, when S/MIME unavailable
-            </div>
-        </div>
-    </div>
-    
-    <!-- Websafe Option -->
-    <div class="option">
-        <input type="checkbox" id="websafe" name="encryption" value="Websafe">
-        <div style="flex: 1;">
-            <label for="websafe" class="option-label">Websafe - Secure Portal Delivery</label>
-            <div class="option-description">
-                <strong>What it does:</strong> Email never enters recipient inbox, accessed via secure portal<br>
-                <strong>How it works:</strong> Recipient gets notification with link, authenticates to read message<br>
-                <strong>Use cases:</strong> Sensitive data to personal emails (Gmail, Yahoo), confidential info to unknown recipients, financial/medical data
-            </div>
-        </div>
-    </div>
-    
-    <!-- EmiG Option -->
-    <div class="option">
-        <input type="checkbox" id="emig" name="encryption" value="EmiG">
-        <div style="flex: 1;">
-            <label for="emig" class="option-label">EmiG - German Authority Standard</label>
-            <div class="option-description">
-                <strong>What it does:</strong> Compliance with German BSI security standards<br>
-                <strong>How it works:</strong> Special encryption meeting government requirements with audit trails<br>
-                <strong>Use cases:</strong> German authorities, healthcare providers, insurance companies, GDPR-critical data for German entities
-            </div>
-        </div>
-    </div>
-</div>
         
-        <button class="apply-btn" onclick="applyEncryptionTags()">Apply Encryption Tags</button>
-        
+        <!-- Status Message -->
         <div class="status-message" id="statusMessage"></div>
+        
+        <!-- Action Button -->
+        <div class="action-section">
+            <button class="apply-btn" onclick="applyEncryptionTags()">
+                Apply Encryption
+            </button>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            SIMO IT Security • Hornet Security Integration v1.0
+        </div>
     </div>
     
     <script>
         // Initialize Office.js
         Office.initialize = function(reason) {
-            // Check current subject for existing tags when add-in loads
             checkExistingTags();
         };
         
-        // Check for existing encryption tags in the subject
+        // Toggle option selection
+        function toggleOption(element, checkboxId) {
+            const checkbox = document.getElementById(checkboxId);
+            if (event.target.type !== 'checkbox') {
+                checkbox.checked = !checkbox.checked;
+            }
+            
+            if (checkbox.checked) {
+                element.classList.add('selected');
+            } else {
+                element.classList.remove('selected');
+            }
+        }
+        
+        // Check for existing encryption tags
         function checkExistingTags() {
             try {
                 const item = Office.context.mailbox.item;
@@ -172,14 +695,14 @@
                         const tags = extractTags(subject);
                         
                         if (tags.length > 0) {
-                            document.getElementById('currentTagsList').textContent = tags.join(', ');
-                            document.getElementById('currentTags').classList.add('visible');
+                            displayCurrentTags(tags);
                             
-                            // Pre-check the checkboxes for existing tags
+                            // Pre-check the checkboxes
                             tags.forEach(tag => {
                                 const checkbox = document.querySelector(`input[value="${tag}"]`);
                                 if (checkbox) {
                                     checkbox.checked = true;
+                                    checkbox.closest('.encryption-option').classList.add('selected');
                                 }
                             });
                         }
@@ -188,6 +711,18 @@
             } catch (error) {
                 console.error("Error checking tags:", error);
             }
+        }
+        
+        // Display current tags
+        function displayCurrentTags(tags) {
+            const container = document.getElementById('currentTags');
+            const tagsList = document.getElementById('currentTagsList');
+            
+            tagsList.innerHTML = tags.map(tag => 
+                `<span class="tag-badge">${tag}</span>`
+            ).join('');
+            
+            container.classList.add('visible');
         }
         
         // Extract existing tags from subject
@@ -200,7 +735,7 @@
             return [];
         }
         
-        // Remove all encryption tags from subject
+        // Remove all encryption tags
         function removeTags() {
             try {
                 const item = Office.context.mailbox.item;
@@ -208,11 +743,8 @@
                 item.subject.getAsync(function(result) {
                     if (result.status === Office.AsyncResultStatus.Succeeded) {
                         let subject = result.value || "";
-                        
-                        // Remove all encryption tags
                         subject = subject.replace(/\[(TLS|S\/MIME|PGP|Websafe|EmiG)\]\s*/gi, '').trim();
                         
-                        // Set the cleaned subject
                         item.subject.setAsync(subject, function(result) {
                             if (result.status === Office.AsyncResultStatus.Succeeded) {
                                 showStatus("All encryption tags removed", "success");
@@ -221,9 +753,8 @@
                                 // Uncheck all checkboxes
                                 document.querySelectorAll('input[name="encryption"]').forEach(cb => {
                                     cb.checked = false;
+                                    cb.closest('.encryption-option').classList.remove('selected');
                                 });
-                            } else {
-                                showStatus("Failed to remove tags: " + result.error.message, "error");
                             }
                         });
                     }
@@ -233,10 +764,9 @@
             }
         }
         
-        // Apply selected encryption tags to email subject
+        // Apply selected encryption tags
         function applyEncryptionTags() {
             try {
-                // Get selected encryption methods
                 const checkboxes = document.querySelectorAll('input[name="encryption"]:checked');
                 
                 if (checkboxes.length === 0) {
@@ -244,41 +774,24 @@
                     return;
                 }
                 
-                // Build tags string
                 const tags = Array.from(checkboxes).map(cb => `[${cb.value}]`).join('');
-                
-                // Get the current email item
                 const item = Office.context.mailbox.item;
                 
-                // Get current subject
                 item.subject.getAsync(function(result) {
                     if (result.status === Office.AsyncResultStatus.Succeeded) {
                         let currentSubject = result.value || "";
-                        
-                        // Remove any existing encryption tags first
                         currentSubject = currentSubject.replace(/\[(TLS|S\/MIME|PGP|Websafe|EmiG)\]\s*/gi, '').trim();
-                        
-                        // Add new tags at the beginning of the subject
                         const newSubject = tags + " " + currentSubject;
                         
-                        // Set the new subject with encryption tags
                         item.subject.setAsync(newSubject.trim(), function(result) {
                             if (result.status === Office.AsyncResultStatus.Succeeded) {
-                                showStatus("Encryption tags applied successfully!", "success");
-                                
-                                // Update current tags display
+                                showStatus("Encryption applied successfully!", "success");
                                 const selectedTags = Array.from(checkboxes).map(cb => cb.value);
-                                document.getElementById('currentTagsList').textContent = selectedTags.join(', ');
-                                document.getElementById('currentTags').classList.add('visible');
-                            } else {
-                                showStatus("Failed to apply tags: " + result.error.message, "error");
+                                displayCurrentTags(selectedTags);
                             }
                         });
-                    } else {
-                        showStatus("Failed to get subject: " + result.error.message, "error");
                     }
                 });
-                
             } catch (error) {
                 showStatus("Error: " + error.message, "error");
             }
@@ -290,24 +803,10 @@
             statusDiv.textContent = message;
             statusDiv.className = 'status-message ' + type;
             
-            // Hide after 3 seconds
             setTimeout(() => {
                 statusDiv.className = 'status-message';
             }, 3000);
         }
-        
-        // Make option divs clickable
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.option').forEach(option => {
-                option.addEventListener('click', function(e) {
-                    if (e.target.type !== 'checkbox') {
-                        const checkbox = this.querySelector('input[type="checkbox"]');
-                        checkbox.checked = !checkbox.checked;
-                    }
-                });
-            });
-        });
     </script>
 </body>
 </html>
-
